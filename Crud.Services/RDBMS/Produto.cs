@@ -1,5 +1,4 @@
-﻿using Crud.Repository.Models;
-using Crud.Repository.RDBMS.Interface;
+﻿using Crud.Repository.RDBMS.Interface;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,16 +16,13 @@ namespace Crud.Repository.RDBMS
         {
             try
             {
-                var parameters = new[] {new SqlParameter("@int_idProduto", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = id },
-                                    new SqlParameter("@str_erro", System.Data.SqlDbType.VarChar, 200){ Direction = ParameterDirection.Output} };
-                var result = context.Produtos.FromSqlRaw("exec sp_produtoDel @int_idProduto, @str_erro OUTPUT", parameters);
-
-                Console.Write(result);
+                var prod = await Listar(context, id, null);
+                context.Produtos.Remove(prod.First());
+                context.SaveChanges();
                 return "ok";
             }
             catch (Exception ex)
             {
-                Console.Write(ex);
                 return "Erro ao apagar registro";
             }
         }
@@ -35,19 +31,8 @@ namespace Crud.Repository.RDBMS
         {
             try
             {
-                string resultado = "";
-                var parameters = new[] {new SqlParameter("@int_idProduto", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = obj.Id },
-                                        new SqlParameter("@str_nomeProduto", System.Data.SqlDbType.VarChar, 100){ Direction = ParameterDirection.Input, Value = obj.Nome },
-                                        new SqlParameter("@dec_precoVenda", System.Data.SqlDbType.Decimal){ Direction = ParameterDirection.Input, Value = obj.PrecoVenda },
-                                        new SqlParameter("@str_descricao", System.Data.SqlDbType.VarChar, 300){ Direction = ParameterDirection.Input, Value = obj.Descricao },
-                                        new SqlParameter("@str_erro", System.Data.SqlDbType.VarChar, 200){ Direction = ParameterDirection.Output} };
-
-                var result = context.Produtos.FromSqlRaw($"exec sp_produtoUpd @int_idProduto, " +
-                                                                             $"@str_nomeProduto," +
-                                                                             $"@dec_precoVenda," +
-                                                                             $"@str_descricao," +
-                                                                             $"@str_erro OUTPUT", parameters);
-                Console.Write(result);
+                var result = context.Produtos.Update(obj);
+                context.SaveChanges();
                 return "";
             }
             catch (Exception ex)
@@ -61,19 +46,8 @@ namespace Crud.Repository.RDBMS
         {
             try
             {
-                string resultado = "";
-                var parameters = new[] {new SqlParameter("@int_idProduto", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = obj.Id },
-                                        new SqlParameter("@str_nomeProduto", System.Data.SqlDbType.VarChar, 100){ Direction = ParameterDirection.Input, Value = obj.Nome },
-                                        new SqlParameter("@dec_precoVenda", System.Data.SqlDbType.Decimal){ Direction = ParameterDirection.Input, Value = obj.PrecoVenda },
-                                        new SqlParameter("@str_descricao", System.Data.SqlDbType.VarChar, 300){ Direction = ParameterDirection.Input, Value = obj.Descricao },
-                                        new SqlParameter("@str_erro", System.Data.SqlDbType.VarChar, 200){ Direction = ParameterDirection.InputOutput, Value = "" } };
-
-                var result = context.Produtos.FromSqlRaw($"exec sp_produtoIns @int_idProduto, " +
-                                                                             $"@str_nomeProduto," +
-                                                                             $"@dec_precoVenda," +
-                                                                             $"@str_descricao," +
-                                                                             $"@str_erro OUTPUT", parameters);
-                Console.Write(result);
+                var result = context.Produtos.Add(obj);
+                context.SaveChanges();
                 return "";
             }
             catch (Exception ex)
@@ -83,15 +57,13 @@ namespace Crud.Repository.RDBMS
             return "";
         }
 
-        public async Task<List<Entities.Produto>> Listar(CrudContext context, int id)
+        public async Task<List<Entities.Produto>> Listar(CrudContext context, int id, string nome)
         {
             try
-            {
-                var param = new SqlParameter("@int_idProduto", System.Data.SqlDbType.Int) { Direction = ParameterDirection.Input, Value = id };
-                var result = context.Produtos.FromSqlRaw("exec sp_produtoSel @int_idProduto", param).ToList();
+            {                
+                var result = context.Produtos.FromSqlInterpolated($"exec sp_produtoSel @int_idProduto = {id}, @str_nome = {nome}").ToList();
                 if (result.Count() > 0)
                     return result;
-
             }
             catch (Exception ex)
             {

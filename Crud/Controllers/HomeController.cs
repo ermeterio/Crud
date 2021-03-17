@@ -26,14 +26,11 @@ namespace Crud.Controllers
             _appCrud = appCrud;
             
         }
-
-        public async Task<IActionResult> Index()
+        [HttpGet("")]
+        [HttpGet("listar/{nome}")]
+        public async Task<IActionResult> Index(string nome)
         {
-            var prods = await _appCrud.ListarProdutos(0);
-            foreach(var prod in prods)
-            {
-                prod.ProdutoImagems = await _appCrud.ListarProdutoImagem(prod.Id);
-            }
+            var prods = await _appCrud.ListarProdutos(0, nome);
             ViewBag.Categorias = await _appCrud.ListarCategoria(0);            
             return View(prods);
         }   
@@ -68,7 +65,7 @@ namespace Crud.Controllers
         }
 
         [HttpPost("Cadastrar")]
-        public async Task<string> Cadastrar([FromBody] Entities.Produto produto)
+        public async Task<string> Cadastrar([FromForm] Entities.Produto produto)
         {
             try
             {

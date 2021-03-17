@@ -1,5 +1,5 @@
 ﻿using Crud.Application.Interface;
-using Crud.Repository.Models;
+using Crud.Repository;
 using Crud.Repository.RDBMS;
 using Crud.Repository.RDBMS.Interface;
 using System;
@@ -26,9 +26,9 @@ namespace Crud.Application
             _produtoImagemDB = produtoImagemDB;
         }
 
-        public async Task<List<Entities.Produto>> ListarProdutos(int idProduto)
+        public async Task<List<Entities.Produto>> ListarProdutos(int idProduto, string nome)
         {
-            return await _produtoDB.Listar(_context, idProduto);
+            return await _produtoDB.Listar(_context, idProduto, nome);
         }
 
         public async Task<string> AtualizarProduto(Entities.Produto produto)

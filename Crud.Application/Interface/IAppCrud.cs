@@ -8,7 +8,7 @@ namespace Crud.Application.Interface
 {
     public interface IAppCrud
     {
-        Task<List<Produto>> ListarProdutos(int idProduto);
+        Task<List<Produto>> ListarProdutos(int idProduto, string nome);
         Task<string> AtualizarProduto(Entities.Produto produto);
         Task<string> Incluir(Entities.Produto produto);
         Task<string> ExcluirProduto(int idProduto);

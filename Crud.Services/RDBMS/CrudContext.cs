@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Crud.Repository.Models
+namespace Crud.Repository
 {
     public partial class CrudContext : DbContext
     {
@@ -13,7 +13,7 @@ namespace Crud.Repository.Models
         {
         }
 
-        public CrudContext(DbContextOptions<DbContext> options)
+        public CrudContext(DbContextOptions<CrudContext> options)
             : base(options)
         {
         }
@@ -40,7 +40,6 @@ namespace Crud.Repository.Models
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Nome)
-                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("nome");
@@ -53,13 +52,11 @@ namespace Crud.Repository.Models
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Descricao)
-                    .IsRequired()
                     .HasMaxLength(300)
                     .IsUnicode(false)
                     .HasColumnName("descricao");
 
                 entity.Property(e => e.Nome)
-                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("nome");
@@ -78,15 +75,8 @@ namespace Crud.Repository.Models
                 entity.Property(e => e.Idproduto).HasColumnName("idproduto");
 
                 entity.Property(e => e.Imagem)
-                    .IsRequired()
                     .HasColumnType("ntext")
                     .HasColumnName("imagem");
-
-                entity.HasOne(d => d.IdprodutoNavigation)
-                    .WithMany(p => p.ProdutoImagems)
-                    .HasForeignKey(d => d.Idproduto)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProdutoImagem_Produto");
             });
 
             OnModelCreatingPartial(modelBuilder);

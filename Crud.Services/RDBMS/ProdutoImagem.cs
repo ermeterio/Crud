@@ -1,5 +1,4 @@
-﻿using Crud.Repository.Models;
-using Crud.Repository.RDBMS.Interface;
+﻿using Crud.Repository.RDBMS.Interface;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,10 +16,9 @@ namespace Crud.Repository.RDBMS
         {
             try
             {
-                var parameters = new[] {new SqlParameter("@int_idImagem", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = id },
-                                        new SqlParameter("@str_erro", System.Data.SqlDbType.VarChar){ Direction = ParameterDirection.InputOutput, Value = "" } };
-                var result = context.Produtos.FromSqlRaw("exec sp_produtoImagemDel @int_idProdutoImagem, @str_erro OUTPUT", parameters);
-                Console.Write(result);
+                var prod = await Listar(context, id);
+                context.ProdutoImagems.Remove(prod.First());
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -38,11 +36,8 @@ namespace Crud.Repository.RDBMS
         {
             try
             {
-                var parameters = new[] {new SqlParameter("@int_idProduto", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = obj.Idproduto },
-                                        new SqlParameter("@str_imagem", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = obj.Imagem },
-                                        new SqlParameter("@str_erro", System.Data.SqlDbType.Int){ Direction = ParameterDirection.InputOutput, Value = "" }};
-                var result = context.ProdutoImagems.FromSqlRaw("exec sp_produtoImagemIns @int_idProduto, @str_imagem, @str_erro OUTPUT", parameters);
-                Console.Write(result);
+                context.ProdutoImagems.Add(obj);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {

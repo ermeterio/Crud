@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Crud.IOC;
 using Crud.Repository.RDBMS;
 using Microsoft.EntityFrameworkCore;
-using Crud.Repository.Models;
+using Crud.Repository;
 
 namespace Crud
 {

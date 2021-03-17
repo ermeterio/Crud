@@ -69,26 +69,26 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Produto</label>
-                        <input name="nome" type="text" class="form-control" value="" required>
+                        <input name="Nome" type="text" class="form-control" value="" required>
                     </div>
                     <div class="form-group">
                         <label>Descrição</label>
-                        <textarea name="descricao" class="form-control" value="" required></textarea>
+                        <textarea name="Descricao" class="form-control" value="" required></textarea>
                     </div>
                     <div class="form-group">
                         <label>Preço Venda</label>
-                        <input name="precovenda" type="number" value="" class="form-control" required>
+                        <input name="PrecoVenda" type="number" value="" class="form-control" required>
                     </div>
-                    @*<div class="form-group">
-                            <label>Categoria</label>
-                            <select class="form-control" aria-label="Default select example">
-                                <option selected>Selecione a Categoria</option>
-                                @foreach (var cat in Categorias)
-                                {
-                                    <option value="@cat.Id">@cat.Nome</option>
-                                }
-                            </select>
-                        </div>*@
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select class="form-control" aria-label="Default select example">
+                            <option selected>Selecione a Categoria</option>
+                            @foreach (var cat in Categorias)
+                            {
+                                <option value="@cat.Id">@cat.Nome</option>
+                            }
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -110,26 +110,26 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Produto</label>
-                        <input name="nome" type="text" class="form-control" value="" required>
+                        <input name="nome" id="nomeEditar" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>Descrição</label>
-                        <textarea name="descricao" class="form-control" value="" required></textarea>
+                        <textarea name="descricao" id="descricaoEditar" class="form-control" required></textarea>
                     </div>
                     <div class="form-group">
                         <label>Preço Venda</label>
-                        <input name="precovenda" type="number" value="" class="form-control" required>
+                        <input name="precovenda" id="precovendaEditar" type="number" class="form-control" required>
                     </div>
-                    @*<div class="form-group">
-                            <label>Categoria</label>
-                            <select class="form-control" aria-label="Default select example">
-                                <option selected>Selecione a Categoria</option>
-                                @foreach (var cat in Categorias)
-                                {
-                                    <option value="@cat.Id">@cat.Nome</option>
-                                }
-                            </select>
-                        </div>*@
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select class="form-control" aria-label="Default select example">
+                            <option selected>Selecione a Categoria</option>
+                            @foreach (var cat in Categorias)
+                            {
+                                <option value="@cat.Id">@cat.Nome</option>
+                            }
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="id" id="id_produto_editar" />

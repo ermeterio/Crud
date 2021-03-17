@@ -5,11 +5,26 @@
 
 function CadastrarProduto() {
 	var $form = $("#inserirProduto");
-	var data = getFormData($form);
-	console.log(data);
+	var data = getFormData($form);	
 	if (data.descricao == '' || data.nome == '' || data.precovenda == '') {
 		alert('Todos os campos são obrigatórios');
-    }
+		return;
+	}
+	$.ajax({
+		type: 'POST',
+		url: 'Cadastrar',
+		data: data,
+		success: function (result) {
+			if(result != 'OK')
+				alert(result);
+			setTimeout(function () {
+				location.reload();
+			}, 400);
+		},
+		error: function (result) {
+			alert('Houve um erro ao  ');
+		}
+	});
 }
 
 function EditarRegistro(id) {
@@ -34,7 +49,9 @@ function ExcluiUnico(id) {
 		type: 'DELETE',
 		data: id,
 		success: function (result) {
-			Location.reload();
+			setTimeout(function () {
+				location.reload();
+			}, 400);
 		}
 	});
 }
@@ -61,10 +78,9 @@ function ExcluirSelecionados() {
 		contentType: 'application/json; charset=utf-8',
 		datatype: 'json',
 		success: function (result) {
-			alert('Success ');
-		},
-		error: function (result) {
-			alert('Fail ');
+			setTimeout(function () {
+				location.reload();
+			}, 400);
 		}
 	});
 }

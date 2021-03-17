@@ -1,5 +1,4 @@
 ﻿using Crud.Entities;
-using Crud.Repository.Models;
 using Crud.Repository.RDBMS.Interface;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +17,9 @@ namespace Crud.Repository.RDBMS
         {
             try
             {
-                var parameters = new[] {new SqlParameter("@int_idCategoria", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = id },
-                                        new SqlParameter("@str_erro", System.Data.SqlDbType.VarChar){ Direction = ParameterDirection.InputOutput, Value = "" } };
-                var result = context.Produtos.FromSqlRaw("exec sp_CategoriaDel @int_idCategoria, @str_erro OUTPUT", parameters);
-
-                Console.Write(result);
+                var cat = await Listar(context, id);
+                context.Categoria.Remove(cat.First());
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -40,16 +37,13 @@ namespace Crud.Repository.RDBMS
         {
             try
             {
-                var parameters = new[] {new SqlParameter("@str_categoria", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = obj.Nome },
-                                        new SqlParameter("@str_erro", System.Data.SqlDbType.Int){ Direction = ParameterDirection.InputOutput, Value = "" } };
-                var result = context.ProdutoImagems.FromSqlRaw("exec sp_CategoriaIns @str_categoria, @str_erro OUTPUT", parameters);
-                Console.Write(result);
+                var result = context.Categoria.Add(obj);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
                 Console.Write(ex);
             }
-
             return "";
         }
 
