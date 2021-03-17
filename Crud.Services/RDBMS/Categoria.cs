@@ -1,4 +1,5 @@
 ﻿using Crud.Entities;
+using Crud.Repository.Models;
 using Crud.Repository.RDBMS.Interface;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -17,14 +18,11 @@ namespace Crud.Repository.RDBMS
         {
             try
             {
-                using (context)
-                {
-                    var parameters = new[] {new SqlParameter("@int_idCategoria", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = id },
-                                        new SqlParameter("@str_erro", System.Data.SqlDbType.Int){ Direction = ParameterDirection.InputOutput, Value = "" } };
-                    var result = context.Produtos.FromSqlRaw("exec sp_CategoriaDel @int_idCategoria, @str_erro OUTPUT", parameters);
+                var parameters = new[] {new SqlParameter("@int_idCategoria", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = id },
+                                        new SqlParameter("@str_erro", System.Data.SqlDbType.VarChar){ Direction = ParameterDirection.InputOutput, Value = "" } };
+                var result = context.Produtos.FromSqlRaw("exec sp_CategoriaDel @int_idCategoria, @str_erro OUTPUT", parameters);
 
-                    Console.Write(result);
-                }
+                Console.Write(result);
             }
             catch (Exception ex)
             {
@@ -42,14 +40,10 @@ namespace Crud.Repository.RDBMS
         {
             try
             {
-                using (context)
-                {
-
-                    var parameters = new[] {new SqlParameter("@str_categoria", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = obj.Nome },
+                var parameters = new[] {new SqlParameter("@str_categoria", System.Data.SqlDbType.Int){ Direction = ParameterDirection.Input, Value = obj.Nome },
                                         new SqlParameter("@str_erro", System.Data.SqlDbType.Int){ Direction = ParameterDirection.InputOutput, Value = "" } };
-                    var result = context.ProdutoImagems.FromSqlRaw("exec sp_CategoriaIns @str_categoria, @str_erro OUTPUT", parameters);
-                    Console.Write(result);
-                }
+                var result = context.ProdutoImagems.FromSqlRaw("exec sp_CategoriaIns @str_categoria, @str_erro OUTPUT", parameters);
+                Console.Write(result);
             }
             catch (Exception ex)
             {
@@ -63,19 +57,16 @@ namespace Crud.Repository.RDBMS
         {
             try
             {
-                using (context)
-                {
-                    var param = new SqlParameter("@int_idCategoria", id);
-                    var result = await context.Categoria.FromSqlRaw("exec sp_CategoriaSel @int_idCategoria", param).ToListAsync();
-                    if (result.Count() > 0)
-                        return result;
-                }
+                var param = new SqlParameter("@int_idCategoria", id);
+                var result = await context.Categoria.FromSqlRaw("exec sp_CategoriaSel @int_idCategoria", param).ToListAsync();
+                if (result.Count() > 0)
+                    return result;
             }
             catch (Exception ex)
             {
                 Console.Write(ex);
             }
             return new List<Entities.Categorium>();
-        }        
+        }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Crud.Repository.RDBMS
+namespace Crud.Repository.Models
 {
     public partial class CrudContext : DbContext
     {
@@ -19,8 +19,8 @@ namespace Crud.Repository.RDBMS
         }
 
         public virtual DbSet<Categorium> Categoria { get; set; }
-        public virtual DbSet<Entities.Produto> Produtos { get; set; }
-        public virtual DbSet<Entities.ProdutoImagem> ProdutoImagems { get; set; }
+        public virtual DbSet<Produto> Produtos { get; set; }
+        public virtual DbSet<ProdutoImagem> ProdutoImagems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -46,7 +46,7 @@ namespace Crud.Repository.RDBMS
                     .HasColumnName("nome");
             });
 
-            modelBuilder.Entity<Crud.Entities.Produto>(entity =>
+            modelBuilder.Entity<Produto>(entity =>
             {
                 entity.ToTable("Produto");
 
@@ -58,8 +58,6 @@ namespace Crud.Repository.RDBMS
                     .IsUnicode(false)
                     .HasColumnName("descricao");
 
-                entity.Property(e => e.IdCategoria).HasColumnName("idCategoria");
-
                 entity.Property(e => e.Nome)
                     .IsRequired()
                     .HasMaxLength(100)
@@ -69,15 +67,9 @@ namespace Crud.Repository.RDBMS
                 entity.Property(e => e.PrecoVenda)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("precoVenda");
-
-                entity.HasOne(d => d.IdCategoriaNavigation)
-                    .WithMany(p => p.Produtos)
-                    .HasForeignKey(d => d.IdCategoria)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Produto_Categoria");
             });
 
-            modelBuilder.Entity<Entities.ProdutoImagem>(entity =>
+            modelBuilder.Entity<ProdutoImagem>(entity =>
             {
                 entity.ToTable("ProdutoImagem");
 

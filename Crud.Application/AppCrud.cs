@@ -1,4 +1,5 @@
 ﻿using Crud.Application.Interface;
+using Crud.Repository.Models;
 using Crud.Repository.RDBMS;
 using Crud.Repository.RDBMS.Interface;
 using System;
@@ -83,5 +84,9 @@ namespace Crud.Application
             return "";
         }
 
+        public async Task<string> Incluir(Entities.Produto produto)
+        {
+            return await _produtoDB.Inserir(_context, produto);
+        }
     }
 }
