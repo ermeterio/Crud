@@ -3,8 +3,18 @@
 
 // Write your JavaScript code.
 
+function CadastrarProduto() {
+	var $form = $("#inserirProduto");
+	var data = getFormData($form);
+	console.log(data);
+	if (data.descricao == '' || data.nome == '' || data.precovenda == '') {
+		alert('Todos os campos são obrigatórios');
+    }
+}
+
 function EditarRegistro(id) {
 	$("#editModal").modal();
+	$("#id_produto_editar").val(id);
 }
 
 function IncluirRegistro() {
@@ -27,6 +37,17 @@ function ExcluiUnico(id) {
 			Location.reload();
 		}
 	});
+}
+
+function getFormData($form) {
+	var unindexed_array = $form.serializeArray();
+	var indexed_array = {};
+
+	$.map(unindexed_array, function (n, i) {
+		indexed_array[n['name']] = n['value'];
+	});
+
+	return indexed_array;
 }
 
 function ExcluirSelecionados() {

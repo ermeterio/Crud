@@ -12,6 +12,7 @@
                         <h2>Gerenciamento de <b>Produtos</b></h2>
                     </div>
                     <div class="col-sm-6">
+                        <input id="texto_pesquisa" type="text" placeholder="Nome do produto" />
                         <a href="#" onclick="IncluirRegistro();" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Inserir um novo produto</span></a>
                         <a href="#" onclick="ValidaExclusao();" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Excluir</span></a>
                     </div>
@@ -46,8 +47,8 @@
                             <td>@prd.Descricao</td>
                             <td>R$ @prd.PrecoVenda</td>
                             <td>
-                                <a href="#" onclick="EditarRegistro(@prd.Id);" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#" onclick="ValidaExclusao(@prd.Id);" class="delete" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a href="#" onclick="EditarRegistro(@prd.Id);" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                <a href="#" onclick="ValidaExclusao(@prd.Id);" class="delete"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                             </td>
                         </tr>
                     }
@@ -60,7 +61,7 @@
 <div id="addModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form id="inserirProduto">
                 <div class="modal-header">
                     <h4 class="modal-title">Inserir Produto</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -68,30 +69,30 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Produto</label>
-                        <input type="text" class="form-control" required>
+                        <input name="nome" type="text" class="form-control" value="" required>
                     </div>
                     <div class="form-group">
                         <label>Descrição</label>
-                        <textarea class="form-control" required></textarea>                        
+                        <textarea name="descricao" class="form-control" value="" required></textarea>
                     </div>
                     <div class="form-group">
                         <label>Preço Venda</label>
-                        <input type="number" class="form-control" required>
+                        <input name="precovenda" type="number" value="" class="form-control" required>
                     </div>
                     @*<div class="form-group">
-                        <label>Categoria</label>
-                        <select class="form-control" aria-label="Default select example">
-                            <option selected>Selecione a Categoria</option>
-                            @foreach (var cat in Categorias)
-                            {
-                                <option value="@cat.Id">@cat.Nome</option>
-                            }                            
-                        </select>
-                    </div>*@
+                            <label>Categoria</label>
+                            <select class="form-control" aria-label="Default select example">
+                                <option selected>Selecione a Categoria</option>
+                                @foreach (var cat in Categorias)
+                                {
+                                    <option value="@cat.Id">@cat.Nome</option>
+                                }
+                            </select>
+                        </div>*@
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                    <input type="submit" class="btn btn-success" value="Add">
+                    <input type="button" class="btn btn-success" onclick="CadastrarProduto()" value="Add">
                 </div>
             </form>
         </div>
@@ -101,7 +102,7 @@
 <div id="editModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form id="editProduct">
                 <div class="modal-header">
                     <h4 class="modal-title">Editar Produto</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -109,30 +110,31 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Produto</label>
-                        <input type="text" class="form-control" required>
+                        <input name="nome" type="text" class="form-control" value="" required>
                     </div>
                     <div class="form-group">
                         <label>Descrição</label>
-                        <textarea class="form-control" required></textarea>
+                        <textarea name="descricao" class="form-control" value="" required></textarea>
                     </div>
                     <div class="form-group">
                         <label>Preço Venda</label>
-                        <input type="number" class="form-control" required>
+                        <input name="precovenda" type="number" value="" class="form-control" required>
                     </div>
                     @*<div class="form-group">
-                        <label>Categoria</label>
-                        <select class="form-control" aria-label="Default select example">
-                            <option selected>Selecione a Categoria</option>
-                            @foreach (var cat in Categorias)
-                            {
-                                <option value="@cat.Id">@cat.Nome</option>
-                            }
-                        </select>
-                    </div>*@
+                            <label>Categoria</label>
+                            <select class="form-control" aria-label="Default select example">
+                                <option selected>Selecione a Categoria</option>
+                                @foreach (var cat in Categorias)
+                                {
+                                    <option value="@cat.Id">@cat.Nome</option>
+                                }
+                            </select>
+                        </div>*@
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="id" id="id_produto_editar" />
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                    <input type="submit" class="btn btn-info" value="Save">
+                    <input type="button" class="btn btn-success" onclick="AtualizarProduto()" value="Add">
                 </div>
             </form>
         </div>

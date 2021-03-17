@@ -43,7 +43,6 @@ namespace Crud.Repository.RDBMS
                                         new SqlParameter("@str_erro", System.Data.SqlDbType.VarChar, 200){ Direction = ParameterDirection.Output} };
 
                 var result = context.Produtos.FromSqlRaw($"exec sp_produtoUpd @int_idProduto, " +
-                                                                             $"@int_idCategoria, " +
                                                                              $"@str_nomeProduto," +
                                                                              $"@dec_precoVenda," +
                                                                              $"@str_descricao," +
@@ -70,7 +69,6 @@ namespace Crud.Repository.RDBMS
                                         new SqlParameter("@str_erro", System.Data.SqlDbType.VarChar, 200){ Direction = ParameterDirection.InputOutput, Value = "" } };
 
                 var result = context.Produtos.FromSqlRaw($"exec sp_produtoIns @int_idProduto, " +
-                                                                             $"@int_idCategoria, " +
                                                                              $"@str_nomeProduto," +
                                                                              $"@dec_precoVenda," +
                                                                              $"@str_descricao," +
