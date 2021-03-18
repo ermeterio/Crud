@@ -1,0 +1,22 @@
+﻿@model List<Crud.Entities.Produto>
+<tbody>
+    @foreach (var prd in Model)
+    {
+        <tr>
+            <td>
+                <span class="custom-checkbox">
+                    <input type="checkbox" id="checkbox1" name="options[]" value="@prd.Id">
+                    <label for="checkbox1"></label>
+                </span>
+            </td>
+            <td>@prd.Nome</td>
+            <td>@prd.Descricao</td>
+            <td>R$ @prd.PrecoVenda</td>
+            <td >
+                <a href="#" onclick="EditarRegistro(@prd.Id);" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                <a href="#" onclick="ValidaExclusao(@prd.Id);" class="delete"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>             
+            </td>
+        </tr>
+    }
+</tbody>
+

@@ -13,9 +13,6 @@ namespace Crud.Application.Interface
         Task<string> Incluir(Entities.Produto produto);
         Task<string> ExcluirProduto(int idProduto);
         Task<List<Entities.Categorium>> ListarCategoria(int idProduto);
-        Task<string> AtualizarCategoria(Entities.Categorium categoria);
-        Task<List<Entities.ProdutoImagem>> ListarProdutoImagem(int idProduto);
-        Task<string> AtualizarProdutoImagem(List<Entities.ProdutoImagem> imagens);
-        Task<string> ExcluirProdutoImagem(int idProduto);
+        Task<string> AtualizarCategoria(Entities.Categorium categoria);       
     }
 }

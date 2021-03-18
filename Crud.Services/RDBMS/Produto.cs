@@ -37,7 +37,7 @@ namespace Crud.Repository.RDBMS
             }
             catch (Exception ex)
             {
-                Console.Write(ex);
+                return "Erro ao atualizar o registro";
             }
             return "";
         }
@@ -52,7 +52,7 @@ namespace Crud.Repository.RDBMS
             }
             catch (Exception ex)
             {
-                Console.Write(ex);
+                return "Erro ao inserir o registro";
             }
             return "";
         }

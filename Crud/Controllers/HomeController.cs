@@ -30,6 +30,7 @@ namespace Crud.Controllers
         [HttpGet("listar/{nome}")]
         public async Task<IActionResult> Index(string nome)
         {
+            ViewBag.Nome = nome;
             var prods = await _appCrud.ListarProdutos(0, nome);
             ViewBag.Categorias = await _appCrud.ListarCategoria(0);            
             return View(prods);
@@ -76,6 +77,34 @@ namespace Crud.Controllers
             {
                 return "Houve um erro ao processar a requisição, tente novamente";
             }
+        }
+
+        [HttpPost("Atualizar")]
+        public async Task<string> Atualizar([FromForm] Entities.Produto produto)
+        {
+            try
+            {
+                await _appCrud.AtualizarProduto(produto);
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return "Houve um erro ao processar a requisição, tente novamente";
+            }
+        }
+
+        [HttpGet("obterProduto/{id}")]
+        public async Task<Entities.Produto> ObterProduto(int id)
+        {
+            try
+            {
+                var prods = await _appCrud.ListarProdutos(id, null);
+                return prods.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                return new Entities.Produto();
+            }            
         }
     }
 }
