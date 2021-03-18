@@ -13,11 +13,9 @@ namespace Crud.Entities
         public string Nome { get; set; }
         public decimal? PrecoVenda { get; set; }
         public string Descricao { get; set; }
-        [NotMapped]
         public string Imagem { get; set; }
+        public int? Idcategoria { get; set; }
         [NotMapped]
-        public int IdCategoria { get; set; }
-        [NotMapped]
-        public IFormFile ImagemFile { get; set; }
+        public IFormFile FormFile { get; set; }
     }
 }

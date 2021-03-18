@@ -28,7 +28,8 @@
                                 <input type="checkbox" id="selectAll">
                                 <label for="selectAll"></label>
                             </span>
-                        </th>
+                        </th>       
+                        <th></th>
                         <th>Produto</th>
                         <th>Descrição</th>
                         <th>Preço Venda</th>
@@ -51,24 +52,24 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Produto</label>
+                        <label>Produto *</label>
                         <input name="Nome" type="text" class="form-control" value="" required>
                     </div>
                     <div class="form-group">
-                        <label>Descrição</label>
+                        <label>Descrição *</label>
                         <textarea name="Descricao" class="form-control" value="" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Preço Venda</label>
+                        <label>Preço Venda *</label>
                         <input name="PrecoVenda" type="number" value="" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>Imagem</label>
-                        <input name="ImagemInsert" type="file" class="form-control" accept=".png">
+                        <input name="formFile" id="formFile" type="file" class="form-control" accept=".png">
                     </div>
                     <div class="form-group">
                         <label>Categoria</label>
-                        <select class="form-control" aria-label="Default select example">
+                        <select class="form-control" name="idcategoria" aria-label="Default select example">
                             <option selected>Selecione a Categoria</option>
                             @foreach (var cat in Categorias)
                             {
@@ -96,24 +97,24 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Produto</label>
+                        <label>Produto *</label>
                         <input name="nome" id="nomeEditar" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label>Descrição</label>
+                        <label>Descrição *</label>
                         <textarea name="descricao" id="descricaoEditar" class="form-control" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Preço Venda</label>
+                        <label>Preço Venda *</label>
                         <input name="precovenda" id="precovendaEditar" type="number" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>Imagem</label>
-                        <input id="ImagemFile" type="file" class="form-control" accept=".png">
+                        <input name="formFile" id="formFile" type="file" class="form-control" accept=".png">
                     </div>
                     <div class="form-group">
                         <label>Categoria</label>
-                        <select class="form-control" aria-label="Default select example">
+                        <select id="categoriaEdit" name="idcategoria" class="form-control" aria-label="Default select example">
                             <option selected>Selecione a Categoria</option>
                             @foreach (var cat in Categorias)
                             {

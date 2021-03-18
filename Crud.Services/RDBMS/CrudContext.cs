@@ -20,14 +20,13 @@ namespace Crud.Repository
 
         public virtual DbSet<Categorium> Categoria { get; set; }
         public virtual DbSet<Produto> Produtos { get; set; }
-        public virtual DbSet<ProdutoImagem> ProdutoImagems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS; Initial Catalog=avaliacao; User ID=sa; Password=sa; MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=avaliacao;User Id=sa;Password=sa;");
             }
         }
 
@@ -56,6 +55,12 @@ namespace Crud.Repository
                     .IsUnicode(false)
                     .HasColumnName("descricao");
 
+                entity.Property(e => e.Idcategoria).HasColumnName("idcategoria");
+
+                entity.Property(e => e.Imagem)
+                    .IsUnicode(false)
+                    .HasColumnName("imagem");
+
                 entity.Property(e => e.Nome)
                     .HasMaxLength(100)
                     .IsUnicode(false)
@@ -64,19 +69,6 @@ namespace Crud.Repository
                 entity.Property(e => e.PrecoVenda)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("precoVenda");
-            });
-
-            modelBuilder.Entity<ProdutoImagem>(entity =>
-            {
-                entity.ToTable("ProdutoImagem");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.Idproduto).HasColumnName("idproduto");
-
-                entity.Property(e => e.Imagem)
-                    .HasColumnType("ntext")
-                    .HasColumnName("imagem");
             });
 
             OnModelCreatingPartial(modelBuilder);

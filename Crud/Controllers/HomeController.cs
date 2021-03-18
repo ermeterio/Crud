@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using Crud.Repository;
 using Crud.Repository.RDBMS.Interface;
 using Crud.Entities;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Net.Http;
 
 namespace Crud.Controllers
 {
@@ -70,6 +73,15 @@ namespace Crud.Controllers
         {
             try
             {
+                if(produto.FormFile.Length > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        produto.FormFile.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+                        produto.Imagem = Convert.ToBase64String(fileBytes);
+                    }
+                }
                 await _appCrud.Incluir(produto);
                 return "OK";
             }
@@ -84,6 +96,15 @@ namespace Crud.Controllers
         {
             try
             {
+                if (produto.FormFile.Length > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        produto.FormFile.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+                        produto.Imagem = Convert.ToBase64String(fileBytes);
+                    }
+                }
                 await _appCrud.AtualizarProduto(produto);
                 return "OK";
             }
@@ -97,14 +118,40 @@ namespace Crud.Controllers
         public async Task<Entities.Produto> ObterProduto(int id)
         {
             try
-            {
-                var prods = await _appCrud.ListarProdutos(id, null);
-                return prods.FirstOrDefault();
+            {                
+                var prods = await _appCrud.ListarProdutos(id, null);                
+                var Produto = prods.FirstOrDefault();
+                //if(!string.IsNullOrEmpty(Produto.Imagem))
+                //{
+                //    var bytes = Convert.FromBase64String(Produto.Imagem);
+                //    Stream stream = new MemoryStream(bytes);
+                //    Produto.FormFile = ReturnFormFile(new FileStreamResult(stream, contentType: ));
+                //}                
+                return Produto;
             }
             catch (Exception ex)
             {
                 return new Entities.Produto();
             }            
+        }
+
+        public IFormFile ReturnFormFile(FileStreamResult result)
+        {
+            var ms = new MemoryStream();
+            try
+            {
+                result.FileStream.CopyTo(ms);
+                return new FormFile(ms, 0, ms.Length, result.FileDownloadName, result.ContentType); ;
+            }
+            catch (Exception e)
+            {
+                ms.Dispose();
+                throw;
+            }
+            finally
+            {
+                ms.Dispose();
+            }
         }
     }
 }

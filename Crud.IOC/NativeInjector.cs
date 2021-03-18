@@ -11,7 +11,6 @@ namespace Crud.IOC
             services.AddScoped<IAppCrud, AppCrud>();
             services.AddScoped<Repository.RDBMS.Interface.IProduto, Repository.RDBMS.Produto>();
             services.AddScoped<Repository.RDBMS.Interface.ICategoria, Repository.RDBMS.Categoria>();
-            services.AddScoped<Repository.RDBMS.Interface.IProdutoImagem, Repository.RDBMS.ProdutoImagem>();
         }
     }
 }

@@ -5,24 +5,23 @@
 
 function retornaURL() {
     var url = document.URL.split("listar/");
-    return url[0].replace("?", "").replace("#","");
+    return url[0].replace("?", "").replace("#", "");
 }
 
-function CadastrarProduto() {
+function CadastrarProduto() {    
     var $form = $("#inserirProduto");
     var data = getFormData($form);
     if (data.descricao == '' || data.nome == '' || data.precovenda == '') {
-        alert('Todos os campos são obrigatórios');
+        alert('Todos os campos com asterisco são obrigatórios');
         return;
-    }   
-    let reader = new FileReader();
-    reader.readAsText($("#ImagemInsert"));
-    console.log(reader.result);
-    debugger;
+    } 
+    var form_data = new FormData($("#inserirProduto")[0])
     $.ajax({
         type: 'POST',
         url: retornaURL() + 'Cadastrar',
-        data: data,
+        data: form_data,
+        processData: false,
+        contentType: false,
         success: function (result) {
             if (result != 'OK')
                 alert(result);
@@ -33,20 +32,23 @@ function CadastrarProduto() {
         error: function (result) {
             alert('Houve um erro ao cadastrar o produto');
         }
-    });
+    });    
 }
 
 function AtualizarProduto() {
     var $form = $("#editarProduto");
     var data = getFormData($form);
     if (data.descricao == '' || data.nome == '' || data.precovenda == '') {
-        alert('Todos os campos são obrigatórios');
+        alert('Todos os campos com asterisco são obrigatórios');
         return;
-    }    
+    } 
+    var form_data = new FormData($("#editarProduto")[0])
     $.ajax({
         type: 'POST',
         url: retornaURL() + 'Atualizar',
-        data: data,
+        data: form_data,
+        processData: false,
+        contentType: false,
         success: function (result) {
             if (result != 'OK')
                 alert(result);
@@ -60,19 +62,29 @@ function AtualizarProduto() {
     });
 }
 
+function getBase64(file) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+        console.log(reader.result);
+    };
+    reader.onerror = function (error) {
+        console.log('Error: ', error);
+    };
+}
 
-
-function EditarRegistro(id) {   
+function EditarRegistro(id) {
     $("#editModal").modal();
     $("#id_produto_editar").val(id);
     $.ajax({
         type: 'GET',
         url: retornaURL() + 'obterProduto/' + id,
         success: function (data) {
-            console.log(data);
             $("#nomeEditar").val(data.nome);
             $("#descricaoEditar").val(data.descricao);
             $('#precovendaEditar').val(data.precoVenda);
+            $('#categoriaEdit').val(data.idcategoria);
+            $('#formFile').val(data.formfile);
         },
         error: function (result) {
             alert('Houve um erro ao');
@@ -80,14 +92,12 @@ function EditarRegistro(id) {
     });
 }
 
-$('#texto_pesquisa').blur(function () {    
-    
-    if ($('#texto_pesquisa').val() != undefined && $('#texto_pesquisa').val() != '')
-    {        
+$('#texto_pesquisa').blur(function () {
+
+    if ($('#texto_pesquisa').val() != undefined && $('#texto_pesquisa').val() != '') {
         window.open(retornaURL() + "listar/" + $('#texto_pesquisa').val(), "_self");
     }
-    else if ($('#pesquisa_salva').val() != $('#texto_pesquisa').val())
-    {
+    else if ($('#pesquisa_salva').val() != $('#texto_pesquisa').val()) {
         window.open(retornaURL(), "_self");
     }
 })
@@ -103,7 +113,7 @@ function Excluir() {
         ExcluiUnico($(".id-exclusao").val());
 }
 
-function ExcluiUnico(id) {    
+function ExcluiUnico(id) {
     $.ajax({
         url: retornaURL() + 'apagar/' + id,
         type: 'DELETE',
@@ -128,9 +138,9 @@ function getFormData($form) {
 }
 
 function ExcluirSelecionados() {
-    var searchIDs = $('table tbody span input[type="checkbox"]').map(function () {
+    var searchIDs = $('table tbody span input:checkbox:checked').map(function () {
         return $(this).val();
-    }).get();   
+    }).get();
     $.ajax({
         type: 'POST',
         url: retornaURL() + 'DeletarProdutosSelecionados',
@@ -140,7 +150,7 @@ function ExcluirSelecionados() {
         success: function (result) {
             setTimeout(function () {
                 location.reload();
-            }, 800);
+            }, 3000);
         }
     });
 }
